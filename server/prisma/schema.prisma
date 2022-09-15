@@ -14,4 +14,27 @@ model Game {
   id        String @id
   title     String
   bannerUrl String
+
+  // referencia para a tabela anúncios
+  // 1 game pode ter vários ads cadastrador
+  // relação 1 para muitos
+  ads Ad[]
+}
+
+model Ad {
+  id              String   @id
+  gameId          String
+  name            String
+  yearsPlaying    Int
+  discord         String
+  weekDays        String
+  hourStart       Int
+  hourEnd         Int
+  useVoiceChannel Boolean
+  // definindo um valor padrão para o createdAt do momento que for criado o registro(now)
+  createdAt       DateTime @default(now())
+
+  // fazendo o relacionamento entre a tabela game com a tabela ad
+  // 1 Ad pertence a um game
+  game Game @relation(fields: [gameId], references: [id])
 }
