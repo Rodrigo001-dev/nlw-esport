@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -7,6 +8,7 @@ import logoImg from '../../assets/logo-nlw-esports.png';
 
 import { Background } from '../../components/Background';
 import { Heading } from '../../components/Heading';
+import { DuoCard } from '../../components/DuoCard';
 
 import { GameParams } from '../../@types/navigation';
 
@@ -14,6 +16,8 @@ import { THEME } from '../../theme';
 import { styles } from './styles';
 
 export function Game() {
+  const [duos, setDuos] = useState([]);
+
   const navigation = useNavigation();
 
   const route = useRoute();
@@ -23,6 +27,12 @@ export function Game() {
   function handleGoBack() {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    fetch(`http://172.23.195.75:3333/games/${game.id}/ads`)  
+      .then(response => response.json())
+      .then(data => console.log(data))
+  }, []);
 
   return (
     <Background>
@@ -54,6 +64,8 @@ export function Game() {
           title={game.title}
           subtitle="Conecte-se e comece a jogar!"
         />
+
+        <DuoCard />
 
       </SafeAreaView>
     </Background>
