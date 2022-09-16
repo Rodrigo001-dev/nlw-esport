@@ -9,6 +9,7 @@ import logoImg from '../../assets/logo-nlw-esports.png';
 import { Background } from '../../components/Background';
 import { Heading } from '../../components/Heading';
 import { DuoCard, DuoCardProps } from '../../components/DuoCard';
+import { DuoMath } from '../../components/DuoMath';
 
 import { GameParams } from '../../@types/navigation';
 
@@ -17,6 +18,7 @@ import { styles } from './styles';
 
 export function Game() {
   const [duos, setDuos] = useState<DuoCardProps[]>([]);
+  const [discordDuosSelected, setDiscordDuosSelected] = useState('');
 
   const navigation = useNavigation();
 
@@ -85,6 +87,12 @@ export function Game() {
           )}
         />
 
+
+        <DuoMath 
+          visible={discordDuosSelected.length > 0}
+          discord="rodrigo#1212"
+          onClose={() =>  {setDiscordDuosSelected('')}}
+        />
       </SafeAreaView>
     </Background>
   );
