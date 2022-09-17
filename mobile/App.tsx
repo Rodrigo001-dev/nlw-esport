@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import {
   useFonts,
@@ -6,6 +7,8 @@ import {
   Inter_700Bold,
   Inter_900Black
 } from '@expo-google-fonts/inter';
+import { Subscription } from 'expo-modules-core';
+import * as Notifications from 'expo-notifications';
 
 import { Routes } from './src/routes';
 
@@ -13,6 +16,7 @@ import { Background } from './src/components/Background';
 import { Loading } from './src/components/Loading';
 
 import './src/services/notificationConfigs';
+import { getPushNotificationToken } from './src/services/getPushNotificationToken';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -21,6 +25,32 @@ export default function App() {
     Inter_700Bold,
     Inter_900Black
   });
+
+  const getNotificationListener = useRef<Subscription>();
+  const responseNotificationListener = useRef<Subscription>();
+
+  useEffect(() => {
+    getPushNotificationToken();
+  }, []);
+
+  useEffect(() => {
+    getNotificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+
+    });
+
+    responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+
+    });
+
+    
+    // fazendo uma limpeza
+    return () => {
+      if (getNotificationListener.current && responseNotificationListener.current) {
+        Notifications.removePushTokenSubscription(getNotificationListener.current);
+        Notifications.removePushTokenSubscription(responseNotificationListener.current);
+      }
+    };
+  }, []);
 
   return (
     <Background>
